@@ -1,0 +1,3 @@
+subscriptions:
+  test: "http://example.com/your-test-subscription"
+  jms: "https://example.com/members/getsub.php?service=YOUR_SERVICE_ID&id=YOUR_UUID"
