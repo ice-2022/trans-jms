@@ -1,5 +1,8 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env sh
+set -eu
+if (set -o pipefail) >/dev/null 2>&1; then
+  set -o pipefail
+fi
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOG_DIR="$BASE_DIR/logs"
@@ -19,13 +22,15 @@ fi
 
 kill "$PID"
 
-for _ in {1..20}; do
+i=1
+while [ "$i" -le 20 ]; do
   if ! kill -0 "$PID" >/dev/null 2>&1; then
     rm -f "$PID_FILE"
     echo "service stopped, pid=$PID"
     exit 0
   fi
   sleep 1
+  i=$((i + 1))
 done
 
 echo "service did not stop in time, force killing pid=$PID"
